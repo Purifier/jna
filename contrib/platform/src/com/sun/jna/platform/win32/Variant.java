@@ -28,6 +28,8 @@ import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 import com.sun.jna.Structure.FieldOrder;
 import com.sun.jna.Union;
+import com.sun.jna.platform.win32.COM.COMBindingBaseObject;
+import com.sun.jna.platform.win32.COM.util.IComEnum;
 import com.sun.jna.platform.win32.OaIdl.CURRENCY;
 import com.sun.jna.platform.win32.OaIdl.DATE;
 import com.sun.jna.platform.win32.OaIdl.DECIMAL;
@@ -248,6 +250,10 @@ public interface Variant {
             this.setValue(VT_INT | VT_BYREF, value);
         }
 
+        public VARIANT(IComEnum value) {
+            this(value.getValue());
+        }
+
         public VARIANT(long value) {
             this();
             this.setValue(VT_I8, new LONGLONG(value));
@@ -296,6 +302,10 @@ public interface Variant {
         public VARIANT(Dispatch value) {
             this();
             this.setValue(Variant.VT_DISPATCH, value);
+        }
+
+        public VARIANT(COMBindingBaseObject value) {
+            this(value.getIDispatch());
         }
 
         public VARIANT(Date value) {
