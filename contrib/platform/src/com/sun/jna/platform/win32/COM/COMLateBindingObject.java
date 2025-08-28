@@ -103,7 +103,22 @@ public class COMLateBindingObject extends COMBindingBaseObject {
 
         return ((IDispatch) result.getValue());
     }
+	
+	/**
+     * Gets the automation property.
+     *
+     * @param propertyName
+     *            the property name
+     * @param value
+     *            parameters to pass to the getter
+     * @return the automation property
+     */
+	protected IDispatch getAutomationProperty(String propertyName, Variant.VARIANT... value) {
+        Variant.VARIANT.ByReference result = new Variant.VARIANT.ByReference();
+        this.oleMethod(OleAuto.DISPATCH_PROPERTYGET, result, propertyName, value);
 
+        return ((IDispatch) result.getValue());
+    }
     /**
      * Gets the automation property.
      *
@@ -237,6 +252,20 @@ public class COMLateBindingObject extends COMBindingBaseObject {
         return res;
     }
 
+	/**
+     * Gets the double property.
+     *
+     * @param propertyName
+     *            the property name
+     * @return the double property
+     */
+    protected double getDoubleProperty(String propertyName) {
+        VARIANT.ByReference result = new VARIANT.ByReference();
+        this.oleMethod(OleAuto.DISPATCH_PROPERTYGET, result, propertyName);
+
+        return result.doubleValue();
+    }
+	
     /**
      * Invoke.
      *
@@ -595,6 +624,18 @@ public class COMLateBindingObject extends COMBindingBaseObject {
         } finally {
             OleAuto.INSTANCE.VariantClear(wrappedValue);
         }
+    }
+	
+	/**
+     * Sets the property.
+     *
+     * @param propertyName
+     *            the property name
+     * @param value
+     *            the value
+     */
+	protected void setProperty(String propertyName, double value) {
+        this.oleMethod(OleAuto.DISPATCH_PROPERTYPUT, null, propertyName, new VARIANT(value));
     }
 
     /**
